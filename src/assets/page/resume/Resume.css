@@ -1,0 +1,45 @@
+.resume-container {
+  width: 100%;
+  padding-top: 80px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.resume-quiz {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  background-color: aqua;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  padding: 40px 80px;
+  gap: 10px;
+}
+
+.resume-detail{
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.quiz-details {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.quiz-item {
+  margin-bottom: 15px;
+}
+
+.quiz-item p {
+  margin: 5px 0;
+}
+

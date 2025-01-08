@@ -1,0 +1,60 @@
+.navbar {
+  position: fixed;
+  background-color: transparent;
+  width: 100%;
+  color: white;
+  display: flex;
+  justify-content: space-between; /* Atur jarak antar elemen */
+  align-items: center;
+  padding: 0 40px; /* Padding kiri dan kanan yang proporsional */
+}
+
+.destination {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  width: 140px;
+  padding: 0px;
+  justify-content: space-between;
+  color: black;
+}
+
+.destination a {
+  color: black;
+  text-decoration: none;
+  font-size: larger;
+  font-weight: 800;
+}
+
+.destination a:hover {
+  color: skyblue;
+  text-decoration: none;
+}
+
+.navbar .destination .dropdown {
+  position: relative;
+  display: inline-block;
+  color: black;
+  text-decoration: none;
+  font-size: larger;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.navbar .destination .dropdown .dropdown-menu {
+  /* display: none; */
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 10px;
+  list-style: none;
+  padding: 10px;
+  min-width: fit-content;
+  z-index: 100;
+}
+
+.navbar .destination .dropdown-menu:hover {
+  background-color: #f4f4f4;
+}
