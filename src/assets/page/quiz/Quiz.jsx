@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Quiz.css";
 import { quizChoose } from "../../data/QuizCategory";
+import { useAuth } from "../../hooks/useAuth";
 
 function Quiz() {
   const [category, setCategory] = useState("9");
   const [difficulty, setDifficulty] = useState("easy");
-  const [quizData, setQuizData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { validateUser, checkOngoingQuiz } = useAuth();
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("loggedInUser");
@@ -50,7 +51,6 @@ function Quiz() {
     setLoading(true);
     try {
       const response = await axios.get(updatedUrl);
-      setQuizData(response.data.results);
       setLoading(false);
       console.log("Category:", category);
       console.log("Difficulty:", difficulty);

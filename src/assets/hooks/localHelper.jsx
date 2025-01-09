@@ -141,7 +141,7 @@ export const updateBestScore = (email, score, category, difficulty) => {
   setQuizStorage(users);
 
   // Perbarui loggedInUser jika sedang aktif
-  const loggedInUser = localStorage.getItem("loggedInUser");
+  const loggedInUser = localStorage.getItem(LOGGED_IN_USER_KEY);
   if (loggedInUser) {
     const parsedUser = JSON.parse(loggedInUser);
     if (parsedUser?.email === email) {

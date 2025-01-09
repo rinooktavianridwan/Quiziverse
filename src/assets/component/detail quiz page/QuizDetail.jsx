@@ -18,7 +18,7 @@ function QuizDetail() {
     totalTime;
   const [timeLeft, setTimeLeft] = useState(storedTimeLeft);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [answers, setAnswers] = useState<string[]>([]);
+  const [answers, setAnswers] = useState([]);
   const categoryMap = quizChoose.reduce((map, item) => {
     map[item.value] = item.category;
     return map;
@@ -67,7 +67,9 @@ function QuizDetail() {
       updateQuizState(loggedInUser.email, {
         questionIndex,
         timeLeft,
-        quizData, 
+        category,
+        difficulty,
+        quizData,
         selectedAnswers: quizData.map((q) => q.selectedAnswer || null),
       });
     }
