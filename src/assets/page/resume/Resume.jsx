@@ -17,7 +17,7 @@ function Resume() {
   const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
   const bestScore = loggedInUser.bestScore;
   console.log("Best Score:", bestScore);
-  const categoryBestScore = bestScore[state.category] ;
+  const categoryBestScore = bestScore[state.category];
   console.log("Category Best Score:", categoryBestScore);
 
   const difficultyBestScore = categoryBestScore[state.difficulty];
@@ -32,7 +32,19 @@ function Resume() {
       <div className="resume-quiz">
         <p>Resume Quiz</p>
         <div className="resume-detail">
-          <p>Total Questions:</p>
+          <p>Category:</p>
+          <p>{state?.category || "General Knowledge"}</p>
+        </div>
+        <div className="resume-detail">
+          <p>Dificult:</p>
+          <p>{state?.difficulty || "easy"}</p>
+        </div>
+        <div className="resume-detail">
+          <p>number of questions answered:</p>
+          <p>{state?.answeredQuestions || "0"}</p>
+        </div>
+        <div className="resume-detail">
+          <p>number of questions:</p>
           <p>{totalQuestions}</p>
         </div>
         <div className="resume-detail">
@@ -42,7 +54,7 @@ function Resume() {
           </p>
         </div>
         <div className="resume-detail">
-          <p>Total Time Taken:</p>
+          <p>Amount of Time Required:</p>
           <p>{300 - totalTime} seconds</p>
         </div>
         <p>Your Score: {score}%</p>

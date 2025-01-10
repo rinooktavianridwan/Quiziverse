@@ -1,68 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./Quiz.css";
 import { quizChoose } from "../../data/QuizCategory";
 import { useAuth } from "../../hooks/useAuth";
+import { useFetchQuiz } from "../../hooks/useFetchQuiz";
 
 function Quiz() {
   const [category, setCategory] = useState("9");
   const [difficulty, setDifficulty] = useState("easy");
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { validateUser, checkOngoingQuiz } = useAuth();
+  const { validateUser } = useAuth();
+  const { fetchQuizData, checkOngoingQuiz, error } = useFetchQuiz();
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    if (!loggedInUser) {
-      navigate("/login");
-    }
-  }, [navigate]);
-
-  useEffect(() => {
-    const loggedInUserItem = localStorage.getItem("loggedInUser");
-    const loggedInUser = loggedInUserItem ? JSON.parse(loggedInUserItem) : null;
-
-    if (loggedInUser) {
-      const quizState = loggedInUser.quizState;
-      if (quizState) {
-        // Tampilkan popup melanjutkan atau memulai baru
-        const continueQuiz = window.confirm(
-          "You have an ongoing quiz. Do you want to continue?"
-        );
-        if (continueQuiz) {
-          navigate(`/quiz/${quizState.questionIndex}`, {
-            state: {
-              quizData: quizState.quizData,
-              category: quizState.category,
-              difficulty: quizState.difficulty,
-              totalTime: quizState.timeLeft,
-            },
-          });
-        }
-      }
-    }
-  }, [navigate]);
+    validateUser();
+    checkOngoingQuiz(navigate);
+  }, [validateUser, checkOngoingQuiz, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedUrl = `https://opentdb.com/api.php?amount=10&type=multiple&category=${category}&difficulty=${difficulty}`;
     setLoading(true);
     try {
-      const response = await axios.get(updatedUrl);
+      const quizData = await fetchQuizData(category, difficulty);
       setLoading(false);
-      console.log("Category:", category);
-      console.log("Difficulty:", difficulty);
       navigate(`/quiz/0`, {
-        state: {
-          quizData: response.data.results,
-          category: category,
-          difficulty: difficulty,
-        },
+        state: { quizData, category, difficulty },
       });
     } catch (err) {
-      setError(err.message);
+      console.error(err.message);
       setLoading(false);
     }
   };

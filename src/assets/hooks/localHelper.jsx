@@ -17,7 +17,7 @@ export const setQuizStorage = (data) => {
 
 // Tambahkan pengguna baru
 export const addUser = (user) => {
-  const users = getQuizStorage(); // Ambil data pengguna yang ada
+  const users = getQuizStorage();
 
   const existingUser = users.find((u) => u.email === user.email);
   if (existingUser) {
@@ -35,13 +35,10 @@ export const addUser = (user) => {
   });
 
   const quizState = null;
-
   const newUser = { ...user, bestScore, quizState };
   users.push(newUser);
 
   setQuizStorage(users);
-
-  console.log("Users after saving:", users); // Debugging log
 };
 
 // Tambahkan status quiz untuk pengguna
@@ -104,7 +101,6 @@ export const clearQuizState = (email) => {
 // Login pengguna
 export const loginUser = (email, password) => {
   const users = getQuizStorage();
-
   const user = users.find((u) => u.email === email && u.password === password);
   if (!user) {
     throw new Error("Invalid email or password.");
@@ -112,26 +108,22 @@ export const loginUser = (email, password) => {
 
   // Simpan data user ke localStorage
   localStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(user));
-
   return user;
 };
 
 // Perbarui skor terbaik pengguna
 export const updateBestScore = (email, score, category, difficulty) => {
   const users = getQuizStorage();
-
   const userIndex = users.findIndex((u) => u.email === email);
   if (userIndex === -1) {
     throw new Error("User not found.");
   }
-
   const user = users[userIndex];
 
   // Validasi struktur bestScore
   if (!user.bestScore || !user.bestScore[category]) {
     throw new Error("Invalid category or difficulty.");
   }
-
   // Perbarui skor hanya jika lebih tinggi dari yang sebelumnya
   if (user.bestScore[category][difficulty] < score) {
     user.bestScore[category][difficulty] = score;

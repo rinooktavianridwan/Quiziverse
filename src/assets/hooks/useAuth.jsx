@@ -39,26 +39,5 @@ export function useAuth() {
     }
   };
 
-  const checkOngoingQuiz = () => {
-    const loggedInUserItem = localStorage.getItem("loggedInUser");
-    const loggedInUser = loggedInUserItem ? JSON.parse(loggedInUserItem) : null;
-
-    if (loggedInUser?.quizState) {
-      const continueQuiz = window.confirm(
-        "You have an ongoing quiz. Do you want to continue?"
-      );
-      if (continueQuiz) {
-        navigate(`/quiz/${loggedInUser.quizState.questionIndex}`, {
-          state: {
-            quizData: loggedInUser.quizState.quizData,
-            category: loggedInUser.quizState.category,
-            difficulty: loggedInUser.quizState.difficulty,
-            totalTime: loggedInUser.quizState.timeLeft,
-          },
-        });
-      }
-    }
-  };
-
-  return { handleLogin, handleSignup, validateUser, checkOngoingQuiz, error };
+  return { handleLogin, handleSignup, validateUser, error };
 }
