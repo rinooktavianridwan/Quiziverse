@@ -1,24 +1,25 @@
 import React from "react";
-import "./TwinklingStar.css";
+import "./Cloud.css";
 import useResponsiveSize from "../../../hooks/useResponsiveSize";
 
-const TwinklingStar = ({ size = 50, top = 0, left = 0, rotate = 0 }) => {
-  const adjustedSize = useResponsiveSize(size);
+const Cloud = ({ width = 100, height = 60, top = 0, left = 0, rotate = 0 }) => {
+  const adjustedWidth = useResponsiveSize(width);
+  const adjustedHeight = useResponsiveSize(height);
 
   return (
     <div
-      className="twinkling-curved-star"
+      className="cloud"
       style={{
-        width: `${adjustedSize}px`,
-        height: `${adjustedSize}px`,
+        width: `${adjustedWidth}px`,
+        height: `${adjustedHeight}px`,
         top: `${top}%`,
         left: `${left}%`,
         position: "absolute",
       }}
     >
       <img
-        src="/star.svg"
-        alt="Star"
+        src="/cloud.svg"
+        alt="Cloud"
         style={{
           width: "100%",
           height: "100%",
@@ -30,4 +31,4 @@ const TwinklingStar = ({ size = 50, top = 0, left = 0, rotate = 0 }) => {
   );
 };
 
-export default TwinklingStar;
+export default Cloud;

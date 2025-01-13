@@ -4,19 +4,45 @@ import "./Quiz.css";
 import { quizChoose } from "../../data/QuizCategory";
 import { useAuth } from "../../hooks/useAuth";
 import { useFetchQuiz } from "../../hooks/useFetchQuiz";
+import BQuiz from "../../component/background/quiz/BQuiz";
+import ConfirmModal from "../../component/comfirmModal/ConfirmModal";
 
 function Quiz() {
   const [category, setCategory] = useState("9");
   const [difficulty, setDifficulty] = useState("easy");
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [ongoingQuiz, setOngoingQuiz] = useState(null);
+
   const navigate = useNavigate();
   const { validateUser } = useAuth();
-  const { fetchQuizData, checkOngoingQuiz, error } = useFetchQuiz();
+  const { fetchQuizData, continueQuiz, resetQuiz, error } = useFetchQuiz();
 
   useEffect(() => {
     validateUser();
-    checkOngoingQuiz(navigate);
-  }, [validateUser, checkOngoingQuiz, navigate]);
+    const loggedInUserItem = localStorage.getItem("loggedInUser");
+    const loggedInUser = loggedInUserItem ? JSON.parse(loggedInUserItem) : null;
+
+    if (loggedInUser?.quizState) {
+      setOngoingQuiz(loggedInUser.quizState);
+      setShowModal(true);
+    }
+  }, []);
+
+  const handleContinueQuiz = () => {
+    continueQuiz(navigate, ongoingQuiz);
+    setShowModal(false);
+  };
+
+  const handleResetQuiz = () => {
+    const loggedInUserItem = localStorage.getItem("loggedInUser");
+    const loggedInUser = loggedInUserItem ? JSON.parse(loggedInUserItem) : null;
+
+    if (loggedInUser) {
+      resetQuiz(loggedInUser.email);
+    }
+    setShowModal(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,10 +61,18 @@ function Quiz() {
 
   return (
     <div className="quiz-container">
+      <BQuiz />
       {loading && (
         <div className="overlay">
           <div className="spinner"></div>
         </div>
+      )}
+      {showModal && (
+        <ConfirmModal
+          message="You have an ongoing quiz. Do you want to continue?"
+          onConfirm={handleContinueQuiz}
+          onCancel={handleResetQuiz}
+        />
       )}
       <h1>Quiziverse</h1>
       <form onSubmit={handleSubmit}>

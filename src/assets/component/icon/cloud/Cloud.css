@@ -1,0 +1,6 @@
+.cloud {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  background: transparent; /* Cloud biasanya memiliki latar belakang transparan */
+}

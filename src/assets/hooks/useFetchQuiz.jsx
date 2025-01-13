@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { deleteQuizState } from "../../assets/hooks/localHelper";
 
 export function useFetchQuiz() {
   const [error, setError] = useState(null);
@@ -15,26 +16,20 @@ export function useFetchQuiz() {
     }
   };
 
-  const checkOngoingQuiz = (navigate) => {
-    const loggedInUserItem = localStorage.getItem("loggedInUser");
-    const loggedInUser = loggedInUserItem ? JSON.parse(loggedInUserItem) : null;
-
-    if (loggedInUser?.quizState) {
-      const continueQuiz = window.confirm(
-        "You have an ongoing quiz. Do you want to continue?"
-      );
-      if (continueQuiz) {
-        navigate(`/quiz/${loggedInUser.quizState.questionIndex}`, {
-          state: {
-            quizData: loggedInUser.quizState.quizData,
-            category: loggedInUser.quizState.category,
-            difficulty: loggedInUser.quizState.difficulty,
-            totalTime: loggedInUser.quizState.timeLeft,
-          },
-        });
-      }
-    }
+  const continueQuiz = (navigate, quizState) => {
+    navigate(`/quiz/${quizState.questionIndex}`, {
+      state: {
+        quizData: quizState.quizData,
+        category: quizState.category,
+        difficulty: quizState.difficulty,
+        totalTime: quizState.timeLeft,
+      },
+    });
   };
 
-  return { fetchQuizData, checkOngoingQuiz, error };
+  const resetQuiz = (userEmail) => {
+    deleteQuizState(userEmail);
+  };
+
+  return { fetchQuizData, continueQuiz, resetQuiz, error };
 }

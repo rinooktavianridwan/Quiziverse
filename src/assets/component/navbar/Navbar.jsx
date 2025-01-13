@@ -60,7 +60,7 @@ function Navbar() {
       <nav className="navbar">
         <div className="logo">
           <Link to={"/"}>
-            <img src="./vite.svg" alt="logo" />
+            <img src="./quiziverse1.png" alt="logo" />
           </Link>
         </div>
         <ul className="destination">

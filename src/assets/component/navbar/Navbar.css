@@ -9,6 +9,11 @@
   padding: 0 40px;
   z-index: 100;
 }
+.navbar .logo img {
+  width: 100%; /* Sesuaikan dengan lebar parent */
+  max-width: 100px; /* Ukuran maksimum logo */
+  height: auto; /* Pertahankan rasio aspek */
+}
 
 .destination {
   display: flex;
@@ -18,25 +23,33 @@
   width: 140px;
   padding: 0px;
   justify-content: space-between;
-  color: black;
+  color: var(--color-bronze);
 }
 
 .destination a {
-  color: black;
+  color: var(--color-bronze);
   text-decoration: none;
   font-size: larger;
   font-weight: 800;
 }
 
 .destination a:hover {
-  color: skyblue;
+  color: var(--color-golden);
   text-decoration: none;
+}
+
+.destination span{
+  color: var(--color-bronze);
+}
+
+.destination span:hover{
+  color: var(--color-golden);
 }
 
 .navbar .destination .dropdown {
   position: relative;
   display: inline-block;
-  color: black;
+  color: var(--color-bronze);
   text-decoration: none;
   font-size: larger;
   font-weight: 700;
@@ -46,7 +59,7 @@
 .navbar .destination .dropdown .dropdown-menu {
   /* display: none; */
   position: absolute;
-  background-color: white;
+  background-color: var(--color-paradise);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   margin-top: 10px;
@@ -56,6 +69,15 @@
   z-index: 100;
 }
 
-.navbar .destination .dropdown-menu:hover {
-  background-color: #f4f4f4;
+.navbar .destination .dropdown-menu li:hover {
+  color: var(--color-golden);
+}
+
+@media screen and (max-width: 600px) {
+  .navbar {
+    padding: 0 20px;
+  }
+  .destination {
+    width: 120px;
+  }
 }

@@ -1,0 +1,15 @@
+.b-quiz-container {
+  margin: 0;
+  position: absolute;
+  background-size: cover;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: rgb(53, 28, 77);
+  background: linear-gradient(
+    0deg,
+    rgba(53, 28, 77, 1) 20%,
+    rgba(25, 8, 41, 1) 100%
+  );
+  overflow: hidden;
+}

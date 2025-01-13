@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { useAuth } from "../../hooks/useAuth";
+import BLogin from "../../component/background/login/BLogin";
 
 function Login() {
   const { handleLogin, handleSignup, error } = useAuth();
@@ -21,55 +22,57 @@ function Login() {
   };
 
   return (
-    <div className="form-container">
-      <div className="main">
-        <input type="checkbox" id="chk" aria-hidden="true" />
+    <>
+      <div className="form-container">
+        <BLogin />
+        <div className="main">
+          <input type="checkbox" id="chk" aria-hidden="true" />
+          <div className="login">
+            <form className="form" onSubmit={onLoginSubmit}>
+              <label htmlFor="chk" aria-hidden="true">
+                Login
+              </label>
+              <div className="warning">
+                {error && <p style={{ color: "red" }}>{error}</p>}
+              </div>
+              <input type="email" name="email" placeholder="Email" required />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+              />
+              <button>Login</button>
+            </form>
+          </div>
 
-        <div className="login">
-          <form className="form" onSubmit={onLoginSubmit}>
-            <label htmlFor="chk" aria-hidden="true">
-              Login
-            </label>
-            <div className="warning">
-              {error && <p style={{ color: "red" }}>{error}</p>}
-            </div>
-            <input type="email" name="email" placeholder="Email" required />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
-            <button>Login</button>
-          </form>
-        </div>
-
-        <div className="signup">
-          <form className="form" onSubmit={onSignupSubmit}>
-            <label htmlFor="chk" aria-hidden="true">
-              Sign up
-            </label>
-            <div className="warning">
-              {error && <p style={{ color: "red" }}>{error}</p>}
-            </div>
-            <input
-              type="text"
-              name="username"
-              placeholder="User name"
-              required
-            />
-            <input type="email" name="email" placeholder="Email" required />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
-            <button>Sign up</button>
-          </form>
+          <div className="signup">
+            <form className="form" onSubmit={onSignupSubmit}>
+              <label htmlFor="chk" aria-hidden="true">
+                Sign up
+              </label>
+              <div className="warning">
+                {error && <p style={{ color: "red" }}>{error}</p>}
+              </div>
+              <input
+                type="text"
+                name="username"
+                placeholder="User name"
+                required
+              />
+              <input type="email" name="email" placeholder="Email" required />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+              />
+              <button>Sign up</button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

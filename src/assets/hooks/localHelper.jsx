@@ -66,6 +66,30 @@ export const updateQuizState = (email, quizState) => {
   }
 };
 
+export const deleteQuizState = (email) => {
+  const users = getQuizStorage();
+  const userIndex = users.findIndex((u) => u.email === email);
+
+  if (userIndex === -1) {
+    throw new Error("User not found.");
+  }
+
+  const user = users[userIndex];
+  user.quizState = null;
+
+  users[userIndex] = user;
+  setQuizStorage(users);
+
+  // Perbarui loggedInUser jika sedang aktif
+  const loggedInUser = localStorage.getItem(LOGGED_IN_USER_KEY);
+  if (loggedInUser) {
+    const parsedUser = JSON.parse(loggedInUser);
+    if (parsedUser?.email === email) {
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+    }
+  }
+};
+
 // Ambil status quiz untuk pengguna
 export const getQuizState = (email) => {
   const users = getQuizStorage();

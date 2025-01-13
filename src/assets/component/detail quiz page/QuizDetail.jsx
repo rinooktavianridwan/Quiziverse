@@ -5,6 +5,7 @@ import { quizChoose } from "../../data/QuizCategory";
 import "./QuizDetail.css";
 import { useQuizTimer } from "../../hooks/useQuizTimer";
 import { useQuizState } from "../../hooks/useQuizState";
+import BQuizresume from "../background/quizresume/BQuizresume";
 
 function QuizDetail() {
   const { id } = useParams();
@@ -48,6 +49,12 @@ function QuizDetail() {
     difficulty
   );
 
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  };
+
   useEffect(() => {
     const shuffledAnswers = [
       ...question.incorrect_answers,
@@ -80,8 +87,10 @@ function QuizDetail() {
       (q) => q.correct_answer === q.selectedAnswer
     ).length;
     const totalQuestions = quizData.length;
-    const answeredQuestions = quizData.filter((q) => q.hasOwnProperty("selectedAnswer")).length;
-    console.log(quizData)
+    const answeredQuestions = quizData.filter((q) =>
+      q.hasOwnProperty("selectedAnswer")
+    ).length;
+    console.log(quizData);
     const score = Math.round((correctAnswers / totalQuestions) * 100);
 
     const storedUser = localStorage.getItem("loggedInUser");
@@ -107,27 +116,32 @@ function QuizDetail() {
   };
 
   return (
-    <div className="detail-container">
-      <div className="timer">Time Left: {timeLeft}s</div>
-      <div className="detail-question">
-        <p dangerouslySetInnerHTML={{ __html: question.question }} />
-        {answers.map((answer, index) => (
-          <div
-            key={index}
-            className={`detail-answer ${
-              selectedAnswer === answer ? "selected" : ""
-            }`}
-            onClick={() => handleSelect(answer)}
-            dangerouslySetInnerHTML={{ __html: answer }}
-          />
-        ))}
-        <div className="detail-confirm">
-          <button onClick={handleNext}>
-            {questionIndex + 1 === quizData.length ? "Submit" : "Next"}
-          </button>
+    <>
+      <div className="detail-container">
+        <BQuizresume />
+        <div className="timer">Time Left: {formatTime(timeLeft)}</div>
+        <div className="detail-question-container">
+          <div className="detail-question">
+            <p dangerouslySetInnerHTML={{ __html: question.question }} />
+          </div>
+          {answers.map((answer, index) => (
+            <div
+              key={index}
+              className={`detail-answer ${
+                selectedAnswer === answer ? "selected" : ""
+              }`}
+              onClick={() => handleSelect(answer)}
+              dangerouslySetInnerHTML={{ __html: answer }}
+            />
+          ))}
+          <div className="detail-confirm">
+            <button onClick={handleNext}>
+              {questionIndex + 1 === quizData.length ? "Submit" : "Next"}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
