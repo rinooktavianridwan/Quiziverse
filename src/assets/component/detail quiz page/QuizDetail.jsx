@@ -90,7 +90,6 @@ function QuizDetail() {
     const answeredQuestions = quizData.filter((q) =>
       q.hasOwnProperty("selectedAnswer")
     ).length;
-    console.log(quizData);
     const score = Math.round((correctAnswers / totalQuestions) * 100);
 
     const storedUser = localStorage.getItem("loggedInUser");

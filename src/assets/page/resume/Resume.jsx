@@ -14,9 +14,7 @@ function Resume() {
   const storedUser = localStorage.getItem("loggedInUser");
   const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
   const bestScore = loggedInUser.bestScore;
-  console.log("Best Score:", bestScore);
   const categoryBestScore = bestScore[state.category];
-  console.log("Category Best Score:", categoryBestScore);
 
   const difficultyBestScore = categoryBestScore[state.difficulty];
 
