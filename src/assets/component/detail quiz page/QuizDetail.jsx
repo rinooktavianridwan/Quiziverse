@@ -92,7 +92,7 @@ function QuizDetail() {
       ).length;
       const score = Math.round((correctAnswers / totalQuestions) * 100);
 
-      const finalTime = manualSubmit ? totalTime - timeLeft : 0; // Use timeLeft for manual submit, 0 for timeout
+      const finalTime = manualSubmit ? timeLeft : 0; // Use timeLeft for manual submit, 0 for timeout
 
       const storedUser = localStorage.getItem("loggedInUser");
       if (storedUser) {
