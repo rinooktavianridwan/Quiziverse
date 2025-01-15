@@ -70,7 +70,10 @@ function Navbar() {
           {user ? (
             <li className="dropdown">
               <span className="username" onClick={toggleDropdown}>
-                {user.username} ▼
+                {user.username.length > 6
+                  ? `${user.username.slice(0, 6)}..`
+                  : user.username}
+                ▼
               </span>
               {dropdownVisible && (
                 <ul className="dropdown-menu">
@@ -88,6 +91,5 @@ function Navbar() {
     )
   );
 }
-
 
 export default Navbar;

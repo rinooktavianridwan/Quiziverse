@@ -15,8 +15,12 @@ function QuizDetail() {
   const quizData = state?.quizData || [];
   const category = state?.category || "9";
   const difficulty = state?.difficulty || "easy";
-  const totalTime = state?.totalTime || 300;
+  const totalTime = state?.totalTime || 180;
   const questionIndex = id ? parseInt(id, 10) : 0;
+
+  const [timezero, setTimezero] = useState(false); // For timeout
+  const [manualSubmit, setManualSubmit] = useState(false); // For manual submission
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const categoryMap = quizChoose.reduce((map, item) => {
     map[item.value] = item.category;
@@ -32,8 +36,10 @@ function QuizDetail() {
   }
 
   const question = quizData[questionIndex];
-  const handleTimeOut = () => handleSubmit();
-  const timeLeft = useQuizTimer(questionIndex, totalTime, handleTimeOut);
+  const timeLeft = useQuizTimer(questionIndex, totalTime, () => {
+    setTimezero(true); // Trigger timeout
+  });
+
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answers, setAnswers] = useState([]);
 
@@ -52,7 +58,10 @@ function QuizDetail() {
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
   };
 
   useEffect(() => {
@@ -70,48 +79,73 @@ function QuizDetail() {
     selectAnswer(answer);
   };
 
+  useEffect(() => {
+    const handleSubmit = async () => {
+      const category = categoryMap[state.category];
+      const difficulty = state.difficulty;
+      const correctAnswers = quizData.filter(
+        (q) => q.correct_answer === q.selectedAnswer
+      ).length;
+      const totalQuestions = quizData.length;
+      const answeredQuestions = quizData.filter((q) =>
+        q.hasOwnProperty("selectedAnswer")
+      ).length;
+      const score = Math.round((correctAnswers / totalQuestions) * 100);
+
+      const finalTime = manualSubmit ? totalTime - timeLeft : 0; // Use timeLeft for manual submit, 0 for timeout
+
+      const storedUser = localStorage.getItem("loggedInUser");
+      if (storedUser) {
+        const loggedInUser = JSON.parse(storedUser);
+        if (loggedInUser) {
+          await updateBestScore(
+            loggedInUser.email,
+            score,
+            category,
+            difficulty
+          );
+          await updateQuizState(loggedInUser.email, null);
+        }
+      }
+
+      localStorage.removeItem("timeLeft");
+      setIsSubmitting(false); // Reset submission state
+
+      navigate("/resume", {
+        state: {
+          quizData,
+          totalTime: finalTime,
+          score,
+          category,
+          difficulty,
+          answeredQuestions,
+        },
+      });
+    };
+
+    if ((timezero || manualSubmit) && !isSubmitting) {
+      setIsSubmitting(true);
+      handleSubmit();
+    }
+  }, [
+    timezero,
+    manualSubmit,
+    isSubmitting,
+    quizData,
+    categoryMap,
+    timeLeft,
+    state,
+    navigate,
+  ]);
+
   const handleNext = () => {
     if (questionIndex + 1 < quizData.length) {
       navigate(`/quiz/${questionIndex + 1}`, {
         state: { quizData, totalTime: timeLeft, category, difficulty },
       });
     } else {
-      handleSubmit();
+      setManualSubmit(true); // Mark as manual submission
     }
-  };
-
-  const handleSubmit = async () => {
-    const category = categoryMap[state.category];
-    const difficulty = state.difficulty;
-    const correctAnswers = quizData.filter(
-      (q) => q.correct_answer === q.selectedAnswer
-    ).length;
-    const totalQuestions = quizData.length;
-    const answeredQuestions = quizData.filter((q) =>
-      q.hasOwnProperty("selectedAnswer")
-    ).length;
-    const score = Math.round((correctAnswers / totalQuestions) * 100);
-
-    const storedUser = localStorage.getItem("loggedInUser");
-    if (storedUser) {
-      const loggedInUser = JSON.parse(storedUser);
-      if (loggedInUser) {
-        await updateBestScore(loggedInUser.email, score, category, difficulty);
-        await updateQuizState(loggedInUser.email, null);
-      }
-    }
-
-    localStorage.removeItem("timeLeft");
-    navigate("/resume", {
-      state: {
-        quizData,
-        totalTime: timeLeft,
-        score,
-        category,
-        difficulty,
-        answeredQuestions,
-      },
-    });
   };
 
   return (

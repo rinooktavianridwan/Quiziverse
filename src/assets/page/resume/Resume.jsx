@@ -57,7 +57,7 @@ function Resume() {
           </div>
           <div className="resume-detail">
             <p>Time Required:</p>
-            <p>{formatTime(300 - totalTime)}</p>
+            <p>{formatTime(180 - totalTime)}</p>
           </div>
           <p>Your Score: {score}%</p>
           <p>Your Best Score: {difficultyBestScore}%</p>
